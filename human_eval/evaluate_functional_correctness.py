@@ -9,7 +9,7 @@ def entry_point(
     sample_file: str,
     k: str = "1,10,100",
     n_workers: int = 4,
-    timeout: float = 3.0,
+    timeout: float = 60,
     problem_file: str = HUMAN_EVAL,
 ):
     """
