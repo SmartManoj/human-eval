@@ -3,23 +3,20 @@ import os
 from pymsgbox import *
 from human_eval.data import write_jsonl, read_problems
 from dotenv import load_dotenv
+import openai
 
 load_dotenv()
 
 problems = read_problems()
 
-model = "Qwen/Qwen2.5-Coder-32B-Instruct"
-
+model = os.getenv('model')
 base_url = os.getenv('base_url')
 api_key = os.getenv('api_key')
 
+openai.api_key = api_key
+openai.base_url = base_url
+
 def completion(prompt):
-    
-    import openai
-
-    openai.api_key = api_key
-    openai.base_url = base_url
-
     response = openai.completions.create(
         model=model,
         prompt=prompt,
@@ -30,8 +27,8 @@ def completion(prompt):
     )
     return response.choices[0].text, response.choices[0].finish_reason
 
-
-task_ids='''HumanEval/163'''.splitlines()
+task_ids=problems.keys()
+# task_ids='''HumanEval/132'''.splitlines()
 problems={task_id:problems[task_id] for task_id in task_ids}
 total_tasks=len(problems)
 one_task=0
@@ -56,7 +53,7 @@ if 1:
         if not one_task:
             with open("results.jsonl", "a") as file:
                 file.write(json.dumps(data) + "\n")
-            break
+            # break
         else:
             exit()
 if not one_task:

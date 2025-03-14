@@ -88,7 +88,7 @@ def evaluate_functional_correctness(
     ks = k
     n,n_correct=total.sum(),correct.sum()
     n_wrong=n-n_correct
-    print(n,n_correct,n_wrong)
+    print(f'total: {n}, correct: {n_correct}, wrong: {n_wrong}')
     pass_at_k = {f"pass@{k}": estimate_pass_at_k(total, correct, k).mean()
                  for k in ks if (total >= k).all()}
 
